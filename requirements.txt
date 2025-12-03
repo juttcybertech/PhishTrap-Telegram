@@ -1,0 +1,5 @@
+python-dotenv
+requests
+python-telegram-bot
+Flask
+Flask-Cors
